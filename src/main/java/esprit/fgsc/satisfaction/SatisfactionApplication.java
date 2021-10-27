@@ -21,6 +21,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 @EnableSwagger2
@@ -56,8 +57,10 @@ public class SatisfactionApplication {
 
     @Bean
     CorsWebFilter corsWebFilter() {
+        ArrayList<String> allowed = new ArrayList<>();
+        allowed.add("*");
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("*"));
+        corsConfig.setAllowedOrigins(allowed);
         corsConfig.setMaxAge(8000L);
         corsConfig.addAllowedMethod("*");
         corsConfig.addAllowedHeader("*");
