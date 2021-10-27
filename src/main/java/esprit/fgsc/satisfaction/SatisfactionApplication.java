@@ -18,10 +18,15 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.reactive.config.EnableWebFlux;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
 
 @EnableWebFlux
 @RestController
@@ -37,9 +42,7 @@ public class SatisfactionApplication {
     }
    // @LoadBalanced
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+    public RestTemplate restTemplate() {return new RestTemplate();}
     @Bean
    // @LoadBalanced
     public WebClient getWebClient(){
@@ -51,5 +54,17 @@ public class SatisfactionApplication {
     @PostConstruct
     public void setUpMongoEscapeCharacterConversion() {
         mongoConverter.setMapKeyDotReplacement("_");
+    }
+
+    @Bean
+    CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(List.of("*"));
+        corsConfig.setMaxAge(8000L);
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return new CorsWebFilter(source);
     }
 }

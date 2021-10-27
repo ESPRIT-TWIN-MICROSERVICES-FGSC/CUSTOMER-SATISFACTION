@@ -125,12 +125,11 @@ public class CampaignController {
 //    private RestTemplate restTemplate;
 //    @GetMapping("/test/rest")
 //    public ResponseEntity<?> testRestTemplate(){
-//        ResponseEntity<SecurityProperties.User> response = this.restTemplate.getForEntity("url", SecurityProperties.User.class);
+//        ResponseEntity<SecurityProperties.User> response = this.restTemplate.getForEntity("url", SecurityProperties.User.class).getHeaders().put();
 //        if(response.getStatusCode().is2xxSuccessful() && response.hasBody()){
 //            User user = response.getBody();
 //            return user;
 //        }
-//
 //        return ResponseEntity.ok(Optional.of("User not found"));
 //    }
     private final CampaignRepository campaignRepository;

@@ -17,7 +17,7 @@ import java.time.Instant;
 public class InviteUrlController {
     // DONE
     @GetMapping("/form")
-    public Mono<Form> findFormByInviteTokenAndEmail(@RequestParam String token, @RequestParam String email, @RequestParam String campaignId){
+    public Mono<Form> findFormByInviteTokenAndEmail(@RequestParam String email, @RequestParam String campaignId){
         return this.campaignRepository
                 .findById(campaignId)
                 .flatMap(campaign -> {
