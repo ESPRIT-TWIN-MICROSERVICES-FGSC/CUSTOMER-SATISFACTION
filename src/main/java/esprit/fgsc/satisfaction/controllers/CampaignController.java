@@ -5,28 +5,25 @@ import esprit.fgsc.satisfaction.models.Campaign;
 import esprit.fgsc.satisfaction.models.Form;
 import esprit.fgsc.satisfaction.models.InviteUrl;
 import esprit.fgsc.satisfaction.repositories.CampaignRepository;
+import esprit.fgsc.satisfaction.services.CampaignServices;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import springfox.documentation.builders.ResponseBuilder;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @CrossOrigin("*")
 @RestController
 public class CampaignController {
+
+
     // REGION : COUNT
     // DONE
     @GetMapping("/count")
@@ -80,7 +77,13 @@ public class CampaignController {
     // DONE
     @GetMapping
     public Mono<Campaign> getById(@RequestParam String campaignId){
-        return this.campaignRepository.findById(campaignId);
+        return this.campaignRepository.findById(campaignId).map(campaign -> {
+            Map employee = this.campaignService.getEmployeeById(campaign.getCreatorEmployeeId());
+            System.out.println("Employee :");
+            System.out.println(employee);
+            campaign.setEmployee(employee);
+            return campaign;
+        });
     }
     // DONE
     @GetMapping("/paginated")
@@ -110,32 +113,13 @@ public class CampaignController {
     public Mono<Void> delete(@RequestParam String campaignId){
         return this.campaignRepository.deleteById(campaignId);
     }
-    // END REGION : CRUD
-//    @Autowired
-//    private WebClient reactiveWebClient;
-//    @GetMapping("/test")
-//    public Flux<?> serviceUrl(@RequestHeader("Authorization") String token) {
-//        return reactiveWebClient.get()
-//                .uri("https://fgsc-gateway.herokuapp.com/api/auth/paginated")
-//                .accept(MediaType.APPLICATION_JSON)
-//                .header("Authorization", token)
-//                .retrieve().bodyToFlux(Object.class);
-//    }
-//    @Autowired
-//    private RestTemplate restTemplate;
-//    @GetMapping("/test/rest")
-//    public ResponseEntity<?> testRestTemplate(){
-//        ResponseEntity<SecurityProperties.User> response = this.restTemplate.getForEntity("url", SecurityProperties.User.class).getHeaders().put();
-//        if(response.getStatusCode().is2xxSuccessful() && response.hasBody()){
-//            User user = response.getBody();
-//            return user;
-//        }
-//        return ResponseEntity.ok(Optional.of("User not found"));
-//    }
+
+    private final CampaignServices campaignService;
     private final CampaignRepository campaignRepository;
     @Autowired
-    public CampaignController(CampaignRepository campaignRepository){
+    public CampaignController(CampaignRepository campaignRepository, CampaignServices campaignServices){
         this.campaignRepository = campaignRepository;
+        this.campaignService = campaignServices;
     }
 }
 

@@ -40,9 +40,9 @@ public class ResponsesController {
     public Mono<Campaign> devOnly() {
         campaignRepository.deleteAll();
         Campaign c = new Campaign();
-        c.setDescription("azzzzzzzzzzzz");
-        c.setCreatorEmployeeId("123123124123");
-        c.setName("AAAAAAAAAAAAAAAA");
+        c.setDescription("Campaign BETA");
+        c.setCreatorEmployeeId("616a1e7e6f8cf03f7ac4916e");
+        c.setName("Test campaign generated for testing purposes only");
         for (int i = 0; i < 20; i++) {
             InviteUrl url = new InviteUrl();
 //            url.setClientEmail("test@gmail.com");
