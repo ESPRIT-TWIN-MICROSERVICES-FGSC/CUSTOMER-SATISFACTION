@@ -54,6 +54,6 @@ jobs:
         file: ./Dockerfile
         builder: ${{ steps.buildx.outputs.name }}
         push: true
-        tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/ciwithgithubaction:${{ steps.current_date.outputs.date }}
+        tags:  espritchihab/fgsc-cfa
     - name: Image Digest
       run: echo ${{ steps.docker_build.outputs.digest }}
