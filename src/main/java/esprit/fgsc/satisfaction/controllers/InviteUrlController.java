@@ -25,7 +25,7 @@ public class InviteUrlController {
                     return campaignRepository.save(campaign);
                 })
                 .map(Campaign::getForm);
-    }h
+    }
     // DONE
     @PostMapping
     public Mono<Campaign> addInvite(@RequestBody InviteUrl inviteUrl, @RequestParam String campaignId, @RequestParam String clientEmail){
