@@ -25,8 +25,12 @@ public class CampaignServices {
 //                .retrieve().bodyToFlux(Object.class);
 //    }
     private final RestTemplate restTemplate;
+    private final static String MAIL_STRING = "https://fgsc-auth-service.herokuapp.com/users/send-mail?email=%s&subject=%s&text=%s";
     public Map getEmployeeById(String employeeId){
         return this.restTemplate.getForObject("https://employee-microservices.herokuapp.com/employee/"+ employeeId, Map.class);
+    }
+    public void sendInviteMail(String email, String subject, String text){
+        new Thread(() -> this.restTemplate.getForObject(String.format(MAIL_STRING,email,subject,text),void.class));
     }
 
 }
